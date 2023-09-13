@@ -1,27 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Tarea__2.Data;
 using Tarea__2.Models;
 
 namespace Tarea__2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDBContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        //public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDBContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<ArticuloEntity> articulos = (IEnumerable<ArticuloEntity>)_context.Articulo.FromSqlInterpolated($"SP_ConsultaOrdenadaAlfabticamente").AsAsyncEnumerable();
+
+            return View(articulos);
+
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
+
+        public IActionResult Start()
+        {
+            return View();
+        }
+
+        public IActionResult Insertar() { 
+            return View(); 
+        }
+
+        public IActionResult Modificar() { 
+            return View(); 
+        }
+
+        public async Task<IActionResult> Borrar(int? id) {
+
+            if (id == null || _context.Articulo == null)
+            {
+                return NotFound();
+            }
+
+            var entidadArticulo = await _context.Articulo
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (entidadArticulo == null)
+            {
+                return NotFound();
+            }
+
+            return View(entidadArticulo);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BorrarConfirmado(int id)
+        {
+            if (_context.Articulo == null)
+            {
+                return Problem("Entity set 'ApplicationDBContext.Articulo'  is null.");
+            }
+            var entidadArticulo = await _context.Articulo.FindAsync(id);
+            if (entidadArticulo != null)
+            {
+                _context.Articulo.Remove(entidadArticulo);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Salir() { 
+            return RedirectToAction("Login", "Acceso"); 
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

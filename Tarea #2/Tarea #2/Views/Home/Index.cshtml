@@ -1,8 +1,88 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!-- model IEnumerable Tarea__2.Models.ArticuloEntity-->
+@model IEnumerable<Tarea__2.Models.ArticuloEntity>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@{
+    ViewData["Title"] = "Principal";
+}
+<br />
+<div class="col-md-5"> 
+    <label class="form-label" for="Nombre1" class="control-label">Nombre:</label>
+    <input type="text" id="Nombre1" class="form-control" />
+
+    <label class="form-label" for="Cantidad1" class="control-label">Cantidad:</label>
+    <input type="text" id="Cantidad1" class="form-control" />
+
+    <label class="form-label" for="TipoArticulo1">Tipo de articulo:</label>
+    <select class="form-select" id="TipoArticulo1" name="Articulos">
+    </select>
+
+    <label class="form-label">Filtros:</label>
+    <div class="form-group">
+        <input type="submit" value="Nombre" class="btn btn-primary" />
+        <input type="submit" value="Cantidad" class="btn btn-primary" />
+        <input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
+    </div> <hr />
+
+	<div>
+		<a asp-action="Insertar"> <input type="submit" value="Insertar" class="btn btn-primary" /> </a>
+		<a asp-action="Modificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a>
+		<a asp-action="Borrar"> <input type="submit" value="Borrar" class="btn btn-primary" /> </a>
+		<a asp-action="Salir"> <input type="submit" value="Salir" class="btn btn-primary" /> </a>
+	</div>
+
+</div> <br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.IdClaseArticulo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            
+            <th>
+                Temporal
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td> 
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdClaseArticulo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td> 
+
+                <td>
+                    <a asp-action="Borrar" asp-route-id="@item.Id">Borrado</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
