@@ -1,5 +1,5 @@
 ﻿<!-- model IEnumerable Tarea__2.Models.ArticuloEntity-->
-@model IEnumerable<Tarea__2.Models.ArticuloEntity>
+@model IEnumerable<Tarea__2.Models.ArticuloVista>
 
 @{
     ViewData["Title"] = "Principal";
@@ -23,12 +23,12 @@
         <input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
     </div> <hr />
 
-	<div>
-		<a asp-action="Insertar"> <input type="submit" value="Insertar" class="btn btn-primary" /> </a>
-		<a asp-action="Modificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a>
-		<a asp-action="Borrar"> <input type="submit" value="Borrar" class="btn btn-primary" /> </a>
-		<a asp-action="Salir"> <input type="submit" value="Salir" class="btn btn-primary" /> </a>
-	</div>
+    <div>
+        <a asp-action="Insertar"> <input type="submit" value="Insertar" class="btn btn-primary" /> </a>
+        <a asp-action="Modificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a>
+        <a asp-action="Borrar"> <input type="submit" value="Borrar" class="btn btn-primary" /> </a>
+        <a asp-action="Salir"> <input type="submit" value="Salir" class="btn btn-primary" /> </a>
+    </div>
 
 </div> <br />
 
@@ -44,7 +44,7 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.IdClaseArticulo)
+                @Html.DisplayNameFor(model => model.ClaseArticulo)
             </th>
 
             <th>
@@ -71,7 +71,7 @@
                 </td> 
                 
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdClaseArticulo)
+                    @Html.DisplayFor(modelItem => item.ClaseArticulo)
                 </td>
 
                 <td>
@@ -79,7 +79,7 @@
                 </td> 
 
                 <td>
-                    <a asp-action="Borrar" asp-route-id="@item.Id">Borrado</a>
+                    <!--<a asp-action="Borrar" asp-route-id="Arroba item.Id">Borrado</a-->
                 </td>
             </tr>
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq;
 using Tarea__2.Data;
 using Tarea__2.Models;
 
@@ -20,9 +21,30 @@ namespace Tarea__2.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<ArticuloEntity> articulos = (IEnumerable<ArticuloEntity>)_context.Articulo.FromSqlInterpolated($"SP_ConsultaOrdenadaAlfabticamente").AsAsyncEnumerable();
+            //IEnumerable<ClaseArticuloEntity> clases = (IEnumerable<ClaseArticuloEntity>)_context.ClaseArticulo.FromSqlInterpolated($"SP_ConsultaClaseArticulo").AsAsyncEnumerable();
+            IEnumerable<ClaseArticuloEntity> clases = _context.ClaseArticulo.ToList();
 
-            return View(articulos);
+            List <ArticuloVista> listaArticulos = new List<ArticuloVista>();
 
+            foreach (var articulo in articulos)
+            {
+                foreach (var clase in clases)
+                {
+                    if (clase.Id == articulo.IdClaseArticulo) {
+                        ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
+
+                        listaArticulos.Add(artVista);
+
+                        //articulosVista = articulosVista.Concat(listaArticulos);
+                        //articulosVista.add(new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio); 
+                    }
+                    
+                }
+            }
+            IEnumerable<ArticuloVista> articulosVista = listaArticulos;
+
+            //return View(articulos);
+            return View(articulosVista);
         }
 
         public IActionResult Privacy()

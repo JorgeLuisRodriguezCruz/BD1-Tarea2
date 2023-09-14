@@ -10,6 +10,7 @@ namespace Tarea__2.Data
         }
 
         public DbSet<ArticuloEntity> Articulo { get; set; }
+        public DbSet<ClaseArticuloEntity> ClaseArticulo { get; set; }
 
     }
 }
