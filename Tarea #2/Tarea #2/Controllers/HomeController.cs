@@ -21,7 +21,6 @@ namespace Tarea__2.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<ArticuloEntity> articulos = (IEnumerable<ArticuloEntity>)_context.Articulo.FromSqlInterpolated($"SP_ConsultaOrdenadaAlfabticamente").AsAsyncEnumerable();
-            //IEnumerable<ClaseArticuloEntity> clases = (IEnumerable<ClaseArticuloEntity>)_context.ClaseArticulo.FromSqlInterpolated($"SP_ConsultaClaseArticulo").AsAsyncEnumerable();
             IEnumerable<ClaseArticuloEntity> clases = _context.ClaseArticulo.ToList();
 
             List <ArticuloVista> listaArticulos = new List<ArticuloVista>();
@@ -34,16 +33,12 @@ namespace Tarea__2.Controllers
                         ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
 
                         listaArticulos.Add(artVista);
-
-                        //articulosVista = articulosVista.Concat(listaArticulos);
-                        //articulosVista.add(new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio); 
                     }
                     
                 }
             }
             IEnumerable<ArticuloVista> articulosVista = listaArticulos;
 
-            //return View(articulos);
             return View(articulosVista);
         }
 

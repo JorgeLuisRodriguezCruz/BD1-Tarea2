@@ -5,32 +5,53 @@
     ViewData["Title"] = "Principal";
 }
 <br />
-<div class="col-md-5"> 
-    <label class="form-label" for="Nombre1" class="control-label">Nombre:</label>
-    <input type="text" id="Nombre1" class="form-control" />
+<div class="container" style="width:100%; margin-bottom:20%">
 
-    <label class="form-label" for="Cantidad1" class="control-label">Cantidad:</label>
-    <input type="text" id="Cantidad1" class="form-control" />
+    <div style="width:40%; float:left">
+        <div class="col-9">
 
-    <label class="form-label" for="TipoArticulo1">Tipo de articulo:</label>
-    <select class="form-select" id="TipoArticulo1" name="Articulos">
-    </select>
+            <label class="form-label" for="Nombre1">Nombre:</label>
+            <input type="text" id="Nombre1" class="form-control" />
 
-    <label class="form-label">Filtros:</label>
-    <div class="form-group">
-        <input type="submit" value="Nombre" class="btn btn-primary" />
-        <input type="submit" value="Cantidad" class="btn btn-primary" />
-        <input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
-    </div> <hr />
+            <label class="form-label" for="Cantidad1">Cantidad:</label>
+            <input type="text" id="Cantidad1" class="form-control" />
 
-    <div>
-        <a asp-action="Insertar"> <input type="submit" value="Insertar" class="btn btn-primary" /> </a>
-        <a asp-action="Modificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a>
-        <a asp-action="Borrar"> <input type="submit" value="Borrar" class="btn btn-primary" /> </a>
-        <a asp-action="Salir"> <input type="submit" value="Salir" class="btn btn-primary" /> </a>
+            <label class="form-label" for="TipoArticulo1">Tipo de articulo:</label>
+            <select class="form-select" id="TipoArticulo1" name="Articulos">
+            </select> 
+        
+        </div>
     </div>
 
-</div> <br />
+	<div style="width:40%; float:left; margin-left:20px">
+
+
+        <div style="margin-bottom:20%">
+			<label class="form-label" style="margin-right:5%" >Filtros:</label>
+			<input type="submit" value="Nombre" class="btn btn-primary" />
+			<input type="submit" value="Cantidad" class="btn btn-primary" />
+			<input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
+		</div>
+
+
+        <div style="margin-top:20%">
+            <div style="float:left; margin-right:5%"> <a asp-action="Insertar">  <input type="submit" value="Insertar" class="btn btn-primary" /> </a></div>
+
+            <div style="float:left; margin-right:5%"><a asp-action="Modificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a></div>
+
+            <div style="float:left; margin-right:5%"><a asp-action="Borrar">     <input type="submit" value="Borrar" class="btn btn-primary" /> </a></div>
+		
+            <div style="float:left; margin-right:5%"><a asp-action="Salir">      <input type="submit" value="Salir" class="btn btn-primary" /> </a></div>
+        </div>
+
+
+	</div>
+
+</div> 
+
+
+
+<br />
 
 <table class="table">
     <thead>
@@ -49,10 +70,6 @@
 
             <th>
                 @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            
-            <th>
-                Temporal
             </th>
 
         </tr>
@@ -78,9 +95,6 @@
                     @Html.DisplayFor(modelItem => item.Precio)
                 </td> 
 
-                <td>
-                    <!--<a asp-action="Borrar" asp-route-id="Arroba item.Id">Borrado</a-->
-                </td>
             </tr>
         }
     </tbody>
