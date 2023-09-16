@@ -3,21 +3,30 @@
 
 @{
     ViewData["Title"] = "Principal";
+    List<SelectListItem> opciones = (List <SelectListItem>) ViewBag.opciones;
 }
+
+
+
 <br />
 <div class="container" style="width:100%; margin-bottom:20%">
 
     <div style="width:40%; float:left">
         <div class="col-9">
 
-            <label class="form-label" for="Nombre1">Nombre:</label>
-            <input type="text" id="Nombre1" class="form-control" />
+            <label class="form-label"> Nombre:</label>
+            <input type="text" id="LbNombre" class="form-control" />
 
-            <label class="form-label" for="Cantidad1">Cantidad:</label>
-            <input type="text" id="Cantidad1" class="form-control" />
+            <label class="form-label"> Cantidad:</label>
+            <input type="text" id="LbCantidad" class="form-control" />
 
-            <label class="form-label" for="TipoArticulo1">Tipo de articulo:</label>
-            <select class="form-select" id="TipoArticulo1" name="Articulos">
+            <label class="form-label">Tipo de articulo:</label>
+            
+            <select class="form-select" id="miComboBox">
+                @foreach (var op in opciones)
+                {
+                    <option value="@Html.DisplayName(op.Value)"> @Html.DisplayName(op.Text)</option>
+                }
             </select> 
         
         </div>
@@ -28,9 +37,9 @@
 
         <div style="margin-bottom:20%">
 			<label class="form-label" style="margin-right:5%" >Filtros:</label>
-			<input type="submit" value="Nombre" class="btn btn-primary" />
-			<input type="submit" value="Cantidad" class="btn btn-primary" />
-			<input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
+            <input id="BtFiltroNombre"   type="submit" value="Nombre" class="btn btn-primary" />
+            <input id="BtFiltroCantidad" type="submit" value="Cantidad" class="btn btn-primary" />
+			<input id="BtFiltroClaseArt" type="submit" value="Tipo de Articulo" class="btn btn-primary" />
 		</div>
 
 
@@ -49,9 +58,18 @@
 
 </div> 
 
+<form id="FormFiltroClaseArt" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="ClaseArticulo" name="claseArt" value="">
+</form>
 
+<form id="FormFiltroCantidad" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="CantFiltr" name="CantidadFiltro" value="">
+</form>
 
-<br />
+<form id="FormFiltroNombre" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="NombreFiltr" name="NombreFiltro" value="">
+</form>
+
 
 <table class="table">
     <thead>
@@ -100,3 +118,26 @@
     </tbody>
 
 </table>
+
+<script>
+
+    document.getElementById('BtFiltroClaseArt').addEventListener('click', function () {
+        var selectedValue = document.getElementById('miComboBox').value;
+        document.getElementById('ClaseArticulo').value = selectedValue;
+        document.getElementById('FormFiltroClaseArt').submit();
+    });
+
+    document.getElementById('BtFiltroCantidad').addEventListener('click', function () {
+        var selectedValue = document.getElementById('LbCantidad').value;
+        document.getElementById('CantFiltr').value = selectedValue;
+        document.getElementById('FormFiltroCantidad').submit();
+    });
+
+    document.getElementById('BtFiltroNombre').addEventListener('click', function () {
+        var selectedValue = document.getElementById('LbNombre').value;
+        document.getElementById('NombreFiltr').value = selectedValue;
+        document.getElementById('FormFiltroNombre').submit();
+    });
+
+
+</script>

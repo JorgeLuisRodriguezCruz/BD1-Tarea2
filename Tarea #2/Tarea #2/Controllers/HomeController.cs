@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
@@ -18,26 +19,102 @@ namespace Tarea__2.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        private IEnumerable<ArticuloEntity> obtenerArticulos()
         {
-            IEnumerable<ArticuloEntity> articulos = (IEnumerable<ArticuloEntity>)_context.Articulo.FromSqlInterpolated($"SP_ConsultaOrdenadaAlfabticamente").AsAsyncEnumerable();
-            IEnumerable<ClaseArticuloEntity> clases = _context.ClaseArticulo.ToList();
+            return (IEnumerable<ArticuloEntity>)_context.Articulo.FromSqlInterpolated($"SP_ConsultaOrdenadaAlfabticamente").AsAsyncEnumerable();
+        }
 
-            List <ArticuloVista> listaArticulos = new List<ArticuloVista>();
+        private List<ClaseArticuloEntity> obtenerClasesArt()
+        {
+            return _context.ClaseArticulo.ToList();
+        }
 
+        private List<ArticuloVista> obtenerTodosArticulos(IEnumerable<ArticuloEntity> articulos, List<ClaseArticuloEntity> clases)
+        {
+            List<ArticuloVista> listaArticulos = new List<ArticuloVista>();
             foreach (var articulo in articulos)
             {
                 foreach (var clase in clases)
                 {
-                    if (clase.Id == articulo.IdClaseArticulo) {
+                    if (clase.Id == articulo.IdClaseArticulo)
+                    {
                         ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
 
                         listaArticulos.Add(artVista);
                     }
-                    
+
                 }
             }
-            IEnumerable<ArticuloVista> articulosVista = listaArticulos;
+            return listaArticulos;
+        }
+
+        private List<ArticuloVista> obtenerArticulosPorClase(IEnumerable<ArticuloEntity> articulos, List<ClaseArticuloEntity> clases, int claseCondicional)
+        {
+            List<ArticuloVista> listaArticulos = new List<ArticuloVista>();
+            foreach (var articulo in articulos)
+            {
+                foreach (var clase in clases)
+                {
+                    if (clase.Id == articulo.IdClaseArticulo && claseCondicional == articulo.IdClaseArticulo)
+                    {
+                        ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio); 
+                        listaArticulos.Add(artVista);
+                    }
+                }
+            }
+            return listaArticulos;
+        }
+
+        private List<SelectListItem> obtenerItemsComboBox (List<ClaseArticuloEntity> clases)
+        {
+            return clases.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.Nombre.ToString(),
+                    Value = d.Id.ToString(),
+                    Selected = false
+                };
+            });
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<ArticuloEntity> articulos = this.obtenerArticulos();
+            List<ClaseArticuloEntity> clases = this.obtenerClasesArt();
+            IEnumerable<ArticuloVista> articulosVista = this.obtenerTodosArticulos(articulos, clases);
+
+            List<SelectListItem> items = this.obtenerItemsComboBox(clases);
+
+            ViewBag.opciones = items;
+
+            return View(articulosVista);
+        }
+
+        [HttpPost]
+        //public ActionResult Index(IEnumerable<ArticuloVista> articulosVista, List<ClaseArticuloEntity> clases) 
+        public ActionResult Index(string NombreFiltro, string CantidadFiltro, string claseArt)
+        {
+
+            IEnumerable<ArticuloEntity> articulos = this.obtenerArticulos();
+            List<ClaseArticuloEntity> clases = this.obtenerClasesArt();
+            IEnumerable<ArticuloVista> articulosVista;
+            List<SelectListItem> items= new List<SelectListItem>();
+
+            if (claseArt != null)
+            {
+                int idCondicional = int.Parse(claseArt);
+                articulosVista = this.obtenerArticulosPorClase(articulos, clases, idCondicional);
+
+                items = this.obtenerItemsComboBox(clases);
+                ViewBag.opciones = items;
+
+                return View(articulosVista);
+            }
+
+            articulosVista = this.obtenerTodosArticulos(articulos, clases);
+            items = this.obtenerItemsComboBox(clases);
+            ViewBag.opciones = items;
 
             return View(articulosVista);
         }
@@ -98,6 +175,26 @@ namespace Tarea__2.Controllers
         public IActionResult Salir() { 
             return RedirectToAction("Login", "Acceso"); 
         }
+
+
+        [HttpPost]
+        public ActionResult FiltrarClaseARticulo (string claseArt)
+        {
+            IEnumerable<ArticuloEntity> articulos = this.obtenerArticulos();
+            List<ClaseArticuloEntity> clases = this.obtenerClasesArt();
+            IEnumerable<ArticuloVista> articulosVista;
+             
+            if (claseArt != null)
+            {
+                int idCondicional = int.Parse(claseArt);
+                articulosVista = this.obtenerArticulosPorClase(articulos, clases, idCondicional);
+                return RedirectToAction(nameof(Index));
+            } else 
+            {
+                return RedirectToAction(nameof(Index)); 
+            }
+        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
