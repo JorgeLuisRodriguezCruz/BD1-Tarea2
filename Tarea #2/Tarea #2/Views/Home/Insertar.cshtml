@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Insertar";
+    List<SelectListItem> opciones = (List<SelectListItem>)ViewBag.opciones;
 }
 
 <br />
@@ -25,8 +26,13 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="IdClaseArticulo" class="control-label">Tipo de articulo:</label>
-                <select asp-for="IdClaseArticulo" class="form-select" name="Articulos"> </select>
+                <label asp-for="IdClaseArticulo" class="control-label">Tipo de articulo:</label> 
+                <select asp-for="IdClaseArticulo" class="form-select" name="ClaseArt">
+                    @foreach (var op in opciones)
+                    {
+                        <option value="@Html.DisplayName(op.Value)"> @Html.DisplayName(op.Text)</option>
+                    }
+                </select>
             </div>
 
             <div class="form-group">

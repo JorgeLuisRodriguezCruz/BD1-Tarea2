@@ -1,7 +1,8 @@
-﻿@model Tarea__2.Models.ArticuloEntity
+﻿@model Tarea__2.Models.ArticuloVista
 
 @{
     ViewData["Title"] = "Modificar";
+    List<SelectListItem> opciones = (List<SelectListItem>)ViewBag.opciones;
 }
 
 <br />
@@ -10,10 +11,10 @@
 
 <div class="row">
     <div class="col-md-4">
-        <!--<form asp-action="Edit"-->
-        <form>
+        <form asp-action="Modificar">
+        <!--form-->
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <!--input type="hidden" asp-for="Id" -->
             <div class="form-group">
                 <label asp-for="Codigo" class="control-label"></label>
                 <input asp-for="Codigo" class="form-control" />
@@ -27,8 +28,15 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="IdClaseArticulo" class="control-label">Tipo de articulo:</label>
-                <select asp-for="IdClaseArticulo" class="form-select" name="Articulos"> </select>
+                <!--label asp-for="ClaseArticulo" class="control-label"></!--label>  <input asp-for="ClaseArticulo" class="form-control" />  <span-- asp-validation-for="ClaseArticulo" class="text-danger"></span-->
+                <label asp-for="ClaseArticulo" class="control-label"></label>
+                <select class="form-select" asp-for="ClaseArticulo">
+                    @foreach (var op in opciones)
+                    {
+                        <option value="@Html.DisplayName(op.Value)"> @Html.DisplayName(op.Text)</option>
+                    }
+                </select>
+
             </div>
 
             <div class="form-group">
@@ -46,3 +54,12 @@
         <a asp-action="Index">  <input type="submit" value="Cancelar" class="btn btn-primary"> </a>
     </div>
 </div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

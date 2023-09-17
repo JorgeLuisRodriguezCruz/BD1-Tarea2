@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Tarea__2.Data;
@@ -10,7 +11,7 @@ namespace Tarea__2.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
+        
         private readonly ApplicationDBContext _context;
 
         //public HomeController(ILogger<HomeController> logger)
@@ -78,6 +79,20 @@ namespace Tarea__2.Controllers
             });
         }
 
+        private ArticuloVista obtenerArticuloVista(ArticuloEntity articulo)
+        {
+            List<ClaseArticuloEntity> clases = this.obtenerClasesArt();
+            ArticuloVista artVista = null;
+            foreach (var clase in clases)
+            {
+                if (clase.Id == articulo.IdClaseArticulo)
+                {
+                    artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
+                }
+            }
+            return artVista;
+        }
+
         public async Task<IActionResult> Index()
         {
             IEnumerable<ArticuloEntity> articulos = this.obtenerArticulos();
@@ -129,35 +144,99 @@ namespace Tarea__2.Controllers
             return View();
         }
 
-        public IActionResult Insertar() { 
+        public IActionResult Insertar() 
+        { 
+            List<ClaseArticuloEntity> clases = this.obtenerClasesArt();
+            List<SelectListItem> items = this.obtenerItemsComboBox(clases);
+            ViewBag.opciones = items;
             return View(); 
         }
 
-        public IActionResult Modificar() { 
-            return View(); 
+        public async Task<IActionResult> Modificar()
+        {
+            string? codigo = TempData["Codigo"] as string;
+            if (codigo != null && _context != null)
+            {
+                ArticuloEntity articulo = _context.Articulo.FirstOrDefault(e => e.Codigo == codigo);
+                if (articulo != null)
+                {
+                    ArticuloVista articuloBuscado = this.obtenerArticuloVista(articulo);
+
+                    List<ClaseArticuloEntity> clases = this.obtenerClasesArt(); 
+                    List<SelectListItem> items = this.obtenerItemsComboBox(clases); 
+                    ViewBag.opciones = items;
+
+
+                    return View(articuloBuscado);
+                }
+            }
+            return NotFound();
         }
 
-        public async Task<IActionResult> Borrar(int? id) {
+        public IActionResult Select()
+        {
+            return View();
+        }
 
-            if (id == null || _context.Articulo == null)
+        [HttpPost]
+        public IActionResult SelectRedoreccion(string Codigo, string Accion)
+        {
+            
+            if (Codigo != null && Codigo != "")
             {
-                return NotFound();
-            }
+                try
+                {
+                    ArticuloEntity articulo = _context.Articulo.FirstOrDefault(e => e.Codigo == Codigo);
 
-            var entidadArticulo = await _context.Articulo
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (entidadArticulo == null)
+                    if (articulo != null)
+                    {
+
+                        if (Accion.ToUpper().Contains("MODIFICAR") == true)
+                        {
+                            TempData["Codigo"] = Codigo;
+                            return RedirectToAction(nameof(Modificar));
+                        }
+                        if (Accion.ToUpper().Contains("BORRAR") == true)
+                        {
+                            TempData["Codigo"] = Codigo;
+                            return RedirectToAction(nameof(Borrar));
+                        }
+                    }
+
+                } catch (Exception ex)
+                { 
+                    ViewBag.Subtitulo = Accion;
+                    ViewBag.Mensaje = "Error: --> " + ex.Message; ;
+
+                    return View(nameof(Select));
+                } 
+            } 
+            ViewBag.Subtitulo = Accion;
+            ViewBag.Mensaje = "Error: El articulo no ha sido encontrado.";
+            return View(nameof(Select));
+        }
+
+        public async Task<IActionResult> Borrar()
+        {
+            string? codigo = TempData["Codigo"] as string;
+            if (codigo != null && _context != null) 
             {
-                return NotFound();
-            }
+                ArticuloEntity articulo = _context.Articulo.FirstOrDefault(e => e.Codigo == codigo);
+                if (articulo != null)
+                {
+                    ArticuloVista articuloBuscado = this.obtenerArticuloVista(articulo);
 
-            return View(entidadArticulo);
+                    return View(articuloBuscado);
+                }
+            } 
+            return NotFound();
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BorrarConfirmado(int id)
+        public async Task<IActionResult> BorrarConfirmado(string Codigo)
         {
+            /*
             if (_context.Articulo == null)
             {
                 return Problem("Entity set 'ApplicationDBContext.Articulo'  is null.");
@@ -168,7 +247,7 @@ namespace Tarea__2.Controllers
                 _context.Articulo.Remove(entidadArticulo);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();*/
             return RedirectToAction(nameof(Index));
         }
 
@@ -176,6 +255,14 @@ namespace Tarea__2.Controllers
             return RedirectToAction("Login", "Acceso"); 
         }
 
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    
+    
 
         [HttpPost]
         public ActionResult FiltrarClaseARticulo (string claseArt)
@@ -196,11 +283,18 @@ namespace Tarea__2.Controllers
         }
 
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult BanderaModificar()
+        {  
+            ViewBag.Subtitulo = "Modificar articulo";
+            return View(nameof(Select));
         }
+
+        public IActionResult BanderaBorrar()
+        { 
+            ViewBag.Subtitulo = "Borrar articulo";
+            return View(nameof(Select));
+        }
+
+
     }
 }
