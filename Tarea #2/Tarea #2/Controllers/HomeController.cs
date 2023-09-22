@@ -87,6 +87,7 @@ namespace Tarea__2.Controllers
         {
             List<ArticuloVista> listaArticulos = new List<ArticuloVista>();
             int artAgregados = 0;
+            if (cantidadCondicional== 0) { return listaArticulos; }
             foreach (var articulo in articulos)
             {
                 foreach (var clase in clases)
