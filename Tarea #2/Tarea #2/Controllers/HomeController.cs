@@ -66,6 +66,46 @@ namespace Tarea__2.Controllers
             return listaArticulos;
         }
 
+        private List<ArticuloVista> obtenerArticulosPorNombre(IEnumerable<ArticuloEntity> articulos, List<ClaseArticuloEntity> clases, string nombreCondicional)
+        {
+            List<ArticuloVista> listaArticulos = new List<ArticuloVista>();
+            foreach (var articulo in articulos)
+            {
+                foreach (var clase in clases)
+                {
+                    if (clase.Id == articulo.IdClaseArticulo && articulo.Nombre.Contains(nombreCondicional))
+                    {
+                        ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
+                        listaArticulos.Add(artVista);
+                    }
+                }
+            }
+            return listaArticulos;
+        }
+
+        private List<ArticuloVista> obtenerArticulosPorCantidad(IEnumerable<ArticuloEntity> articulos, List<ClaseArticuloEntity> clases, int cantidadCondicional)
+        {
+            List<ArticuloVista> listaArticulos = new List<ArticuloVista>();
+            int artAgregados = 0;
+            foreach (var articulo in articulos)
+            {
+                foreach (var clase in clases)
+                {
+                    if (clase.Id == articulo.IdClaseArticulo)
+                    {
+                        ArticuloVista artVista = new ArticuloVista(clase.Nombre, articulo.Codigo, articulo.Nombre, articulo.Precio);
+                        listaArticulos.Add(artVista);
+                        artAgregados++;
+                    }
+                }
+                if (artAgregados == cantidadCondicional)
+                {
+                    return listaArticulos;
+                }
+            }
+            return listaArticulos;
+        }
+
         private List<SelectListItem> obtenerItemsComboBox (List<ClaseArticuloEntity> clases)
         {
             return clases.ConvertAll(d =>
@@ -125,6 +165,30 @@ namespace Tarea__2.Controllers
                 ViewBag.opciones = items;
 
                 return View(articulosVista);
+            }
+            if (NombreFiltro != null)
+            { 
+                articulosVista = this.obtenerArticulosPorNombre(articulos, clases, NombreFiltro);
+
+                items = this.obtenerItemsComboBox(clases);
+                ViewBag.opciones = items;
+
+                return View(articulosVista);
+            }
+            if (CantidadFiltro != null)
+            {
+                try
+                {
+                    int cantidad = int.Parse(CantidadFiltro); 
+                    articulosVista = this.obtenerArticulosPorCantidad (articulos, clases, cantidad);
+
+                    items = this.obtenerItemsComboBox(clases);
+                    ViewBag.opciones = items;
+
+                    return View(articulosVista);
+
+                }
+                catch(Exception) { }
             }
 
             articulosVista = this.obtenerTodosArticulos(articulos, clases);
@@ -262,8 +326,6 @@ namespace Tarea__2.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     
-    
-
         [HttpPost]
         public ActionResult FiltrarClaseARticulo (string claseArt)
         {
