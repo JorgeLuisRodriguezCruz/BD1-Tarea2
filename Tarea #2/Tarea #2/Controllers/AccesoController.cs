@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Tarea__2.Data;
 using Tarea__2.Models;
+using System;
+using System.IO;
 
 namespace Tarea__2.Controllers
 {
@@ -18,6 +21,36 @@ namespace Tarea__2.Controllers
 
         public IActionResult Login()
         {
+            //string rut = "C:\\Users\\rodri\\Desktop\\GIT\\BD1-Tarea2\\Tarea #2\\Tarea #2\\DatosBase\\DatosDe@daTarea232.xml";
+            //string xmlContent="";
+            
+            try
+            {
+                //xmlContent = System.IO.File.ReadAllText(rut);
+                //Console.WriteLine(xmlContent);
+
+                SqlConnection conn = (SqlConnection)_context.Database.GetDbConnection();
+                SqlCommand cmd = conn.CreateCommand();
+                conn.Open();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //cmd.CommandText = "CargaXML";
+                //cmd.CommandText = "carggXML"; 
+                cmd.CommandText = "ChargeXMLdata";
+                //cmd.Parameters.Add("@xmlData", System.Data.SqlDbType.NVarChar, 500).Value = xmlContent; 
+                cmd.ExecuteNonQuery();
+                conn.Close(); 
+                
+            }
+            catch (SqlException ex)
+            { 
+                string errorMessage = ex.Message;  
+                Console.WriteLine("ERROR --> "+ errorMessage);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("El archivo XML no se encontró en la ruta especificada.");
+            }
+
             return View();
         }
 
