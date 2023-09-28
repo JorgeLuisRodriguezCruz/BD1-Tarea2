@@ -1,0 +1,19 @@
+﻿<root>
+	<ClasesdeArticulos>
+		<ClasedeArticulos Nombre="Electricos"/>
+		<ClasedeArticulos Nombre="Tornilleria"/>
+		<ClasedeArticulos Nombre="Pinturas"/>
+		<ClasedeArticulos Nombre="Fontaneria"/>
+		<ClasedeArticulos Nombre="Electricidad"/>
+		<ClasedeArticulos Nombre="Proteccion"/>
+		<ClasedeArticulos Nombre="MaquinariaPesada"/>
+		<ClasedeArticulos Nombre="Cerraduras"/> 
+		<ClasedeArticulos Nombre="Construccion"/>
+		<ClasedeArticulos Nombre="Carpinteria"/>
+		<ClasedeArticulos Nombre="Jardineria"/>
+		<ClasedeArticulos Nombre="Uniformes"/>
+		<ClasedeArticulos Nombre="Adhesivos"/>
+		<ClasedeArticulos Nombre="Automotriz"/>
+		<ClasedeArticulos Nombre="Almacenamiento"/>
+	</ClasesdeArticulos>
+</root>

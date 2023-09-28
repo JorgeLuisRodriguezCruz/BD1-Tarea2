@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Seleccion"; 
+}
+
+
+<body>
+    <div id="login">
+        <h3 class="text-center text-white pt-5">Login form</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+
+                        <!--action="Url.Action("Login","Acceso")"-->
+                        <!--form id="login-form" class="form" action="Url.Action("Home","Select")" method="post"-->
+                        <h3 class="text-center text-info"> @ViewBag.Subtitulo </h3>
+
+                        <div class="form-group">
+                            <label for="Codigo" class="text-info">Insertar codigo:</label><br/>
+                            <input type="text" id="LbCodigo" class="form-control">
+                        </div> <br/>
+
+
+                        <div class="form-group">
+                            <div style="float:left"> <input id="BtAceptar" type="submit" class="btn btn-primary" value="Aceptar"> </div>
+
+							<div style="float:left; margin-left:4%"> <a asp-action="Index">  <input type="submit" value="Cancelar" class="btn btn-primary" /> </a></div>
+                        </div><br />
+                        <div style="margin-top:5%"> <a style="color:orangered">@ViewBag.Mensaje</a> </div>
+
+
+                        <form id="FormOculto" method="post" action="/Home/SelectRedoreccion" style="display: none;">
+                            <input type="hidden" id="CodigoEntrada" name="Codigo" value="">
+                            <input type="hidden" name="Accion" value="@ViewBag.Subtitulo">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</body>
+
+<script>
+
+    document.getElementById('BtAceptar').addEventListener('click', function () {
+        var selectedValue = document.getElementById('LbCodigo').value;
+        document.getElementById('CodigoEntrada').value = selectedValue;
+        document.getElementById('FormOculto').submit();
+    });
+</script>

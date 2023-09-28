@@ -1,8 +1,143 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<!-- model IEnumerable Tarea__2.Models.ArticuloEntity-->
+@model IEnumerable<Tarea__2.Models.ArticuloVista>
+
+@{
+    ViewData["Title"] = "Principal";
+    List<SelectListItem> opciones = (List <SelectListItem>) ViewBag.opciones;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<br />
+<div class="container" style="width:100%; margin-bottom:20%">
+
+    <div style="width:40%; float:left">
+        <div class="col-9">
+
+            <label class="form-label"> Nombre:</label>
+            <input type="text" id="LbNombre" class="form-control" />
+
+            <label class="form-label"> Cantidad:</label>
+            <input type="text" id="LbCantidad" class="form-control" />
+
+            <label class="form-label">Tipo de articulo:</label>
+            
+            <select class="form-select" id="miComboBox">
+                @foreach (var op in opciones)
+                {
+                    <option value="@Html.DisplayName(op.Value)"> @Html.DisplayName(op.Text)</option>
+                }
+            </select> 
+        
+        </div>
+    </div>
+
+	<div style="width:40%; float:left; margin-left:20px">
+
+
+        <div style="margin-bottom:20%">
+			<label class="form-label" style="margin-right:5%" >Filtros:</label>
+            <input id="BtFiltroNombre"   type="submit" value="Nombre" class="btn btn-primary" />
+            <input id="BtFiltroCantidad" type="submit" value="Cantidad" class="btn btn-primary" />
+			<input id="BtFiltroClaseArt" type="submit" value="Tipo de Articulo" class="btn btn-primary" />
+		</div>
+
+
+        <div style="margin-top:20%">
+            <div style="float:left; margin-right:5%"> <a asp-action="Insertar">  <input type="submit" value="Insertar" class="btn btn-primary" /> </a></div>
+
+            <div style="float:left; margin-right:5%"><a asp-action="BanderaModificar"> <input type="submit" value="Modificar" class="btn btn-primary" /> </a></div>
+
+            <div style="float:left; margin-right:5%"><a asp-action="BanderaBorrar">     <input type="submit" value="Borrar" class="btn btn-primary" /> </a></div>
+		
+            <div style="float:left; margin-right:5%"><a asp-action="Salir">      <input type="submit" value="Salir" class="btn btn-primary" /> </a></div>
+        </div>
+
+
+	</div>
+
+</div> 
+
+<form id="FormFiltroClaseArt" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="ClaseArticulo" name="claseArt" value="">
+</form>
+
+<form id="FormFiltroCantidad" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="CantFiltr" name="CantidadFiltro" value="">
+</form>
+
+<form id="FormFiltroNombre" method="post" action="/Home/Index" style="display: none;">
+    <input type="hidden" id="NombreFiltr" name="NombreFiltro" value="">
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ClaseArticulo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td> 
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaseArticulo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td> 
+
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script>
+
+    document.getElementById('BtFiltroClaseArt').addEventListener('click', function () {
+        var selectedValue = document.getElementById('miComboBox').value;
+        document.getElementById('ClaseArticulo').value = selectedValue;
+        document.getElementById('FormFiltroClaseArt').submit();
+    });
+
+    document.getElementById('BtFiltroCantidad').addEventListener('click', function () {
+        var selectedValue = document.getElementById('LbCantidad').value;
+        document.getElementById('CantFiltr').value = selectedValue;
+        document.getElementById('FormFiltroCantidad').submit();
+    });
+
+    document.getElementById('BtFiltroNombre').addEventListener('click', function () {
+        var selectedValue = document.getElementById('LbNombre').value;
+        document.getElementById('NombreFiltr').value = selectedValue;
+        document.getElementById('FormFiltroNombre').submit();
+    });
+
+
+</script>

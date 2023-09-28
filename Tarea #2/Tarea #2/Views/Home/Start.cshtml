@@ -1,0 +1,55 @@
+﻿@{
+	ViewData["Title"] = "Tarea 2";
+}
+
+<br />
+
+<head>
+
+	<div class="row">
+		<form  >
+			<!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
+			<div class="col-md-5"> 
+
+				<label class="form-label" for="Nombre" class="control-label">Nombre:</label>
+				<input type="text" id="Nombre" class="form-control" />
+
+
+				<label class="form-label" for="Cantidad" class="control-label">Cantidad:</label>
+				<input type="text" id="Cantidad" class="form-control" />
+
+				<br />
+
+				<label class="form-label" for="TipoArticulo">Tipo de articulo:</label>
+				<select class="form-select" id="TipoArticulo" name="Articulos">
+					<option value="Herramienta">Herramienta</option>
+					<option value="Decorativo">Decorativo</option>
+					<option value="Limpieza">Limpieza</option>
+				</select>
+				
+				<br />
+				<label class="form-label">Filtros:</label>
+				<div class="form-group">
+					<input type="submit" value="Nombre" class="btn btn-primary" />
+					<input type="submit" value="Cantidad" class="btn btn-primary" />
+					<input type="submit" value="Tipo de Articulo" class="btn btn-primary" />
+				</div>
+
+			</div>
+			
+			<hr />
+			<div class="form-group">
+				<input type="submit" value="Insertar" class="btn btn-primary" />
+				<input type="submit" value="Modificar" class="btn btn-primary" />
+				<input type="submit" value="Borrar" class="btn btn-primary" />
+			</div>
+			
+			
+		</form>
+
+		
+	</div>
+
+	<hr />
+
+</head>

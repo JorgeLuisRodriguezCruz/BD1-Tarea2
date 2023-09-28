@@ -16,12 +16,36 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\rodri\Desktop\GIT\BD1-Tarea2\Tarea #2\Tarea #2
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Acceso/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNvXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCb3JyYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Insertar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbnNlcnRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Select.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWxlY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Home/Start.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/rodri/Desktop/GIT/BD1-Tarea2/Tarea \#2/Tarea \#2/Views/Shared/Error.cshtml]
